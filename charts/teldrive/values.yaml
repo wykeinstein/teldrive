@@ -1,0 +1,99 @@
+# Default values for the Teldrive Helm chart.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/tgdrive/teldrive
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+# Teldrive reads all runtime settings from this generated config file.
+# Set at least db.data-source, jwt.allowed-users, jwt.secret, and
+# tg.uploads.encryption-key before using the chart in production.
+config:
+  db:
+    data-source: ""
+  jwt:
+    allowed-users: []
+    secret: ""
+  server:
+    port: 8080
+  tg:
+    uploads:
+      encryption-key: ""
+
+# Use an existing Secret instead of rendering config above.
+# The Secret must contain a key named config.yml by default.
+existingConfigSecret: ""
+existingConfigSecretKey: config.yml
+
+extraEnv: []
+extraEnvFrom: []
+
+service:
+  type: ClusterIP
+  port: 8080
+  annotations: {}
+
+# Configure Kubernetes ingress for exposing the Teldrive web UI and API.
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: teldrive.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: teldrive-tls
+  #    hosts:
+  #      - teldrive.example.com
+
+resources: {}
+
+livenessProbe:
+  enabled: true
+  tcpSocket: true
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 3
+
+readinessProbe:
+  enabled: true
+  tcpSocket: true
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 3
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: null
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+volumes: []
+volumeMounts: []
