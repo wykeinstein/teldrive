@@ -1,0 +1,16 @@
+apiVersion: v2
+name: teldrive
+description: A Helm chart for deploying Teldrive on Kubernetes
+type: application
+version: 0.1.0
+appVersion: "latest"
+home: https://github.com/tgdrive/teldrive
+sources:
+  - https://github.com/tgdrive/teldrive
+keywords:
+  - teldrive
+  - telegram
+  - storage
+  - files
+maintainers:
+  - name: Teldrive Maintainers

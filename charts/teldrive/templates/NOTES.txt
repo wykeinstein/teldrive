@@ -1,0 +1,15 @@
+Teldrive has been installed.
+
+1. Configure the generated Secret or set chart values for your PostgreSQL DSN,
+   allowed Telegram usernames, JWT secret, and upload encryption key.
+
+2. If ingress is enabled, open one of these hostnames:
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else }}
+   Ingress is disabled. Port-forward the service instead:
+   kubectl port-forward svc/{{ include "teldrive.fullname" . }} 8080:{{ .Values.service.port }}
+   Then open http://localhost:8080
+{{- end }}
